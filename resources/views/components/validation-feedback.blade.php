@@ -1,4 +1,4 @@
-<div class="m-2 text-sm">
+<div class="fixed bottom-12 text-sm">
 <!-- He who is contented is rich. - Laozi -->
     @if (session()->has('success_') && session('success_')!=="")
     <div class="font-semibold px-3 py-2 rounded bg-emerald-200 text-emerald-600 opacity-70">{{ session('success_') }}</div>

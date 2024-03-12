@@ -16,11 +16,12 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null')->onUpdate('cascade'); // tiap item pasti dimiliki oleh satu user
             $table->string('nama',255);
             $table->string('deskripsi', 1000)->nullable(); // tiap item memiliki deskripsi dan dapat juga dikosongkan
-            $table->string('status', 20)->nullable(); // ready, open or sold
+            $table->bigInteger('harga')->default(0); // tiap item memiliki deskripsi dan dapat juga dikosongkan
+            $table->string('status', 20)->default('ready'); // ready, open or sold
             $table->string('buyer', 50)->nullable(); // tiap item dapat diambil oleh satu orang
             $table->foreignId('buyer_id')->nullable()->references('id')->on('users')->constrained()->onDelete('set null'); // tiap item dapat diambil oleh satu orang
             $table->string('keterangan', 200)->nullable(); // semisal ada keterangan yang perlu di notice, maka dicatat pada kolom ini.
-            $table->boolean('sold')->default(false);
+            $table->boolean('sold')->default(false); // sinonimnya jadi tinyint
             $table->boolean('hide')->default(false);
             $table->timestamps();
         });
