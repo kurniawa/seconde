@@ -4,13 +4,13 @@
     <x-errors-any></x-errors-any>
     <x-validation-feedback></x-validation-feedback>
     @if (Auth::user())
-    <div class="flex justify-end">
+    <div class="flex justify-end mt-1">
         <a href="{{ route('items.create') }}">
             <button class="bg-emerald-400 text-white p-1 rounded">Add Item</button>
         </a>
     </div>
     @endif
-    <div class="grid grid-cols-2 gap-2 mt-2">
+    <div class="grid grid-cols-2 gap-2 mt-1">
         @foreach ($items as $key => $item)
             <a href="{{ route('items.show', $item->id) }}" class="p-2 bg-white rounded shadow drop-shadow">
                 <div>

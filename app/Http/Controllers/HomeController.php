@@ -10,7 +10,12 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     public function home() {
-        $items = Item::latest()->limit(100)->get();
+        try {
+            $items = Item::latest()->limit(100)->get();
+        } catch (\Throwable $th) {
+            //throw $th;
+            $items = collect();
+        }
         // dd($items);
         $item_photos = collect();
         foreach ($items as $item) {
