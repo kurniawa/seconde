@@ -59,7 +59,7 @@
             <div class="mt-2">
                 <label for="deskripsi" class="block text-sm font-medium leading-6 text-gray-900">Deskripsi</label>
                 <div class="mt-2">
-                    <textarea id="deskripsi" name="deskripsi" rows="3" class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" value="{{ $item->deskripsi }}"></textarea>
+                    <textarea id="deskripsi" name="deskripsi" rows="3" class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">{{ $item->deskripsi }}</textarea>
                 </div>
             </div>
             <div class="mt-2 grid grid-cols-1">
@@ -77,8 +77,67 @@
                     <input type="text" name="keterangan" id="keterangan" class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" value="{{ $item->keterangan }}">
                 </div>
             </div>
-            <div class="mt-3 flex justify-center text-xs">
-                <button type="submit" class="rounded px-3 py-2 font-semibold bg-emerald-400 border-2 border-emerald-500 text-white hover:bg-emerald-600 active:bg-emerald-700 focus:ring focus:ring-emerald-300" type="submit">Konfirmasi edit</button>
+            <div class="mt-8">
+                <table>
+                    <tr>
+                        <td class="align-top">hide ?</td>
+                        <td>
+                            <label class="inline-flex items-center cursor-pointer">
+                                @if ($item->hide)
+                                <input type="checkbox" name="hide" value="yes" class="sr-only peer" checked>
+                                @else
+                                <input type="checkbox" name="hide" value="yes" class="sr-only peer">
+                                @endif
+                                <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-top"><div class="mr-3">sold to ?</div></td>
+                        <td>
+                            <div>
+                                <label class="inline-flex items-center cursor-pointer">
+                                    @if ($item->sold)
+                                    <input id="toggle-daftar-peminat" type="checkbox" name="sold" value="yes" class="sr-only peer" onclick="toggle_light(this.id, 'select-daftar-peminat', [], [], 'block')" checked>
+                                    @else
+                                    <input id="toggle-daftar-peminat" type="checkbox" name="sold" value="yes" class="sr-only peer" onclick="toggle_light(this.id, 'select-daftar-peminat', [], [], 'block')">
+                                    @endif
+                                    <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+                            <div id="select-daftar-peminat" class="{{ ($item->sold) ? '' : 'hidden' }}">
+                                <div class="max-w-sm mx-auto">
+                                    <div>
+                                        <label for="peminat_item" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih peminat</label>
+                                        <select id="peminat_item" name="peminat_item_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                            <option value="">-Pilih peminat-</option>
+                                            <option value="">-</option>
+                                            @if ($item->sold)
+                                            @foreach ($peminat_items as $peminat_item)
+                                            @if ($peminat_item->user_id == $item->buyer_id)
+                                            <option value="{{ $peminat_item->id }}" selected>{{ $peminat_item->nama }}</option>
+                                            @else
+                                            <option value="{{ $peminat_item->id }}">{{ $peminat_item->nama }}</option>
+                                            @endif
+                                            @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                    <div class="mt-2">Atau</div>
+                                    <div class="mt-2">
+                                        <div>
+                                            <label for="small-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tulis nama lain</label>
+                                            <input type="text" name="peminat_item_nama" id="small-input" value="{{ ($item->sold) ? $item->buyer : '' }}" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="mt-3 flex justify-center">
+                <button type="submit" class="rounded px-3 py-2 font-semibold bg-emerald-300 border-2 border-emerald-400 text-white hover:bg-emerald-600 active:bg-emerald-700 focus:ring focus:ring-emerald-300" type="submit">Konfirmasi edit</button>
             </div>
         </form>
     </div>
@@ -103,6 +162,10 @@
         // console.log(input_image_element.value);
         input_image_element.value = null;
         // console.log(input_image_element.value);
+    }
+
+    function toggleDaftarPeminat() {
+        console.log('toggleDaftarPeminat');
     }
 </script>
 @endsection

@@ -22,6 +22,15 @@
 </head>
 <body class="relative">
     <div id="menu-close-layer" class="absolute w-screen h-screen hidden z-30" onclick="hideMenuCloseLayer('profile-menu','menu-close-layer')"></div>
+    <div id="loading-animation-layer" class="hidden fixed w-screen h-screen z-30 bg-slate-300 opacity-35">
+        <div role="status" class="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            <svg aria-hidden="true" class="inline w-16 h-16 text-gray-200 animate-spin dark:text-gray-600 fill-purple-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+            </svg>
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
     <div class="min-h-full">
         <nav class="bg-emerald-100 no_print">
           <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -69,16 +78,26 @@
                   <!-- Profile dropdown -->
                   <div class="relative ml-3">
                     <div>
-                      <button type="button" class="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true" onclick="toggleMenu('profile-menu', 'menu-close-layer')">
-                        <span class="sr-only">Open user menu</span>
                         @if (Auth::user())
                         @if (Auth::user()->profile_picture)
-                        <img class="h-8 w-8 rounded-full" src="{{ asset("storage/" . Auth::user()->profile_picture) }}" alt="Profile Picture">
+                        <button type="button" class="flex max-w-xs items-center rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true" onclick="toggleMenu('profile-menu', 'menu-close-layer')">
+                            <span class="sr-only">Open user menu</span>
+                            <img class="h-8 w-8 rounded-full" src="{{ asset("storage/" . Auth::user()->profile_picture) }}" alt="Profile Picture">
+                        </button>
                         @else
-                        <img class="h-8 w-8 rounded-full" src="{{ asset('images/srikandi-mascot.jpg') }}" alt="Profile Picture">
+                        <button class="text-white bg-indigo-300 rounded-full w-8 h-8 flex justify-center items-center" id="user-menu-button" aria-expanded="false" aria-haspopup="true" onclick="toggleMenu('profile-menu', 'menu-close-layer')">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                            </svg>
+                        </button>
                         @endif
+                        @else
+                        <button class="text-white bg-indigo-300 rounded-full w-8 h-8 flex justify-center items-center" id="user-menu-button" aria-expanded="false" aria-haspopup="true" onclick="toggleMenu('profile-menu', 'menu-close-layer')">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                            </svg>
+                        </button>
                         @endif
-                      </button>
                     </div>
 
                     <!--
@@ -194,7 +213,7 @@
             <div class="text-center">
                 <span>Welcome, {{ Auth::user()->username }}!</span>
             </div>
-            <form action="{{ route('logout') }}" method="POST">
+            <form action="{{ route('logout') }}" method="POST" onsubmit="showLoadingSpinner()">
                 @csrf
                 <div class="flex justify-center">
                     <button type="submit" class="rounded-md border-2 border-yellow-400 bg-yellow-200 py-1 px-2 font-medium hover:bg-gray-700 hover:text-white flex gap-1 items-center">
@@ -209,7 +228,7 @@
             <div class="text-center">
                 <p>
                     User not logged in.
-                    <a href="{{ route('login') }}" class="font-bold text-blue-400 hover:bg-gray-700 hover:text-white">Log in</a>
+                    <a href="{{ route('login') }}" class="font-bold text-blue-400 hover:bg-gray-700 hover:text-white" onclick="showLoadingSpinner()">Log in</a>
                 </p>
             </div>
             @endif
@@ -243,6 +262,14 @@
                 </svg>`;
             }
         }, 450);
+    }
+
+    function showLoadingSpinner() {
+        $('#loading-animation-layer').show();
+    }
+
+    function hideLoadingSpinner(params) {
+        $('#loading-animation-layer').hide();
     }
 </script>
 </html>

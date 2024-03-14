@@ -5,14 +5,19 @@
     <x-validation-feedback></x-validation-feedback>
     @if (Auth::user())
     <div class="flex justify-end mt-1">
-        <a href="{{ route('items.create') }}">
+        <a href="{{ route('items.create') }}" onclick="showLoadingSpinner()">
             <button class="bg-emerald-400 text-white p-1 rounded">Add Item</button>
         </a>
     </div>
     @endif
     <div class="grid grid-cols-2 gap-2 mt-1">
         @foreach ($items as $key => $item)
-            <a href="{{ route('items.show', $item->id) }}" class="p-2 bg-white rounded shadow drop-shadow">
+            <a href="{{ route('items.show', $item->id) }}" class="p-2 bg-white rounded shadow drop-shadow relative" onclick="showLoadingSpinner()">
+                @if ($item->sold)
+                <div class="absolute top-0 right-0 bottom-0 left-0 bg-slate-300 opacity-25">
+                    <div class="absolute text-5xl font-bold top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">sold</div>
+                </div>
+                @endif
                 <div>
                     @if (isset($item_photos[$key]->photo_path))
                     <img src="{{ asset("storage/" . $item_photos[$key]->photo_path) }}" alt="item_photo" class="w-full">

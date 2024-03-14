@@ -4,7 +4,7 @@
     <x-errors-any></x-errors-any>
     <x-validation-feedback></x-validation-feedback>
     <div>
-        <form action="{{ route('login') }}" method="POST">
+        <form action="{{ route('login') }}" method="POST" onsubmit="showLoadingSpinner()">
             @csrf
             <div class="">
                 <label for="username" class="block text-sm font-medium leading-6 text-gray-900">Username</label>

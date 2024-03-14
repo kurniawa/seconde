@@ -11,7 +11,7 @@ class HomeController extends Controller
 {
     public function home() {
         try {
-            $items = Item::latest()->limit(100)->get();
+            $items = Item::where('hide', false)->latest()->limit(100)->orderBy('sold')->get();
         } catch (\Throwable $th) {
             //throw $th;
             $items = collect();

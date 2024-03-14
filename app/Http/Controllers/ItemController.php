@@ -28,15 +28,14 @@ class ItemController extends Controller
         $photos = $request->file('photos');
         // dump($post);
         // dd($photos);
+        $request->validate([
+            'nama' => 'required',
+            'harga' => 'nullable|numeric'
+        ]);
 
         if ($post['harga'] === null) {
             $post['harga'] = "0";
         }
-
-        $request->validate([
-            'nama' => 'required',
-            'harga' => 'numeric'
-        ]);
 
         $harga = ((int)$post['harga'] * 100);
         $user = Auth::user();
@@ -178,42 +177,6 @@ class ItemController extends Controller
         return back()->with($feedback);
     }
 
-    function edit(Item $item, Request $request) {
-        // dd($item);
-
-        $item_photos = collect();
-
-        for ($i=0 ; $i < 5 ; $i++) {
-            $item_photo = ItemPhoto::where('item_id', $item->id)->where('photo_index', $i)->first();
-
-            $item_photos->push($item_photo);
-        }
-        // dd($item->user->id);
-        $related_user = null;
-
-        if (Auth::user()) {
-            if (Auth::user()->id == $item->user->id) {
-                $related_user = Auth::user();
-            } else {
-                $request->validate(['error' => 'required'], ['error.required' => '-You are not related user-']);
-            }
-        }
-
-        $data = [
-            'menus' => Menu::get(),
-            'route_now' => 'home',
-            'profile_menus' => Menu::get_profile_menus(),
-            'parent_route' => 'home',
-            'spk_menus' => Menu::get_spk_menus(),
-            'item' => $item,
-            'item_photos' => $item_photos,
-            'related_user' => $related_user,
-        ];
-
-        // dd($data);
-        return view('items.edit', $data);
-    }
-
     function delete_photo(Item $item, ItemPhoto $item_photo) {
         // dump(Storage::exists($item_photo->photo_path));
         // dd($item_photo);
@@ -265,9 +228,108 @@ class ItemController extends Controller
 
     }
 
+    function edit(Item $item, Request $request) {
+        // dd($item);
+
+        $item_photos = collect();
+
+        for ($i=0 ; $i < 5 ; $i++) {
+            $item_photo = ItemPhoto::where('item_id', $item->id)->where('photo_index', $i)->first();
+
+            $item_photos->push($item_photo);
+        }
+        // dd($item->user->id);
+        $related_user = null;
+
+        if (Auth::user()) {
+            if (Auth::user()->id == $item->user->id) {
+                $related_user = Auth::user();
+            } else {
+                $request->validate(['error' => 'required'], ['error.required' => '-You are not related user-']);
+            }
+        }
+
+        $peminat_items = PeminatItem::where('item_id', $item->id)->get();
+
+        $data = [
+            'menus' => Menu::get(),
+            'route_now' => 'home',
+            'profile_menus' => Menu::get_profile_menus(),
+            'parent_route' => 'home',
+            'spk_menus' => Menu::get_spk_menus(),
+            'item' => $item,
+            'item_photos' => $item_photos,
+            'related_user' => $related_user,
+            'peminat_items' => $peminat_items,
+        ];
+
+        // dd($data);
+        return view('items.edit', $data);
+    }
+
     function update(Item $item, Request $request) {
         $post = $request->post();
-        dump($post);
-        dd($item);
+        // dump($post);
+        // dd($item);
+
+        $request->validate([
+            'harga' => 'nullable|numeric',
+        ]);
+
+        $success_ = "";
+
+        $harga = $post['harga'];
+        if ($post['harga'] === null) {
+            $harga = 0;
+        }
+
+        $hide = 0;
+        if (isset($post['hide'])) {
+            if ($post['hide'] === 'yes') {
+                $hide = 1;
+            }
+        }
+
+        $sold = 0;
+        $buyer_id = null;
+        $buyer = null;
+        $status = 'ready';
+
+        if (isset($post['sold'])) {
+            if ($post['sold'] === 'yes') {
+                if ($post['peminat_item_id']) {
+                    $peminat_item = PeminatItem::find($post['peminat_item_id'])->first();
+                    if ($peminat_item) {
+                        $buyer_id = $peminat_item->id;
+                        $buyer = $peminat_item->nama;
+                    }
+                } elseif ($post['peminat_item_nama']) {
+                    $buyer = $post['peminat_item_nama'];
+                } else {
+                    $request->validate(['error' => 'required'], ['error.required' => '-Sold di set, namun peminat tidak dipilih atau ditulis-']);
+                }
+                $sold = 1;
+                $status = 'sold';
+            }
+        }
+
+        $item->update([
+            "nama" => $post['nama'],
+            "deskripsi" => $post['deskripsi'],
+            "harga" => (string)$harga,
+            "status" => $status,
+            "buyer" => $buyer,
+            "buyer_id" => $buyer_id,
+            "keterangan" => $post['keterangan'],
+            "sold" => (string)$sold,
+            "hide" => (string)$hide,
+        ]);
+        $success_ .= "-Item diupdate-";
+
+        $feedback = [
+            "success_" => $success_
+        ];
+
+        return back()->with($feedback);
     }
 }
