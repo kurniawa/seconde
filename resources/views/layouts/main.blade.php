@@ -271,6 +271,9 @@
 
     function showLoadingSpinner() {
         $('#loading-animation-layer').show();
+        setTimeout(() => {
+            $('#loading-animation-layer').hide();
+        }, 3000);
     }
 
     function hideLoadingSpinner(params) {
