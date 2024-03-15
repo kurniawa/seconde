@@ -13,7 +13,7 @@ class AuthController extends Controller
         $data = [
             'menus' => Menu::get(),
             'route_now' => 'home',
-            'profile_menus' => Menu::get_profile_menus(),
+            'profile_menus' => Menu::get_profile_menus(Auth::user()),
             'parent_route' => 'home',
             'spk_menus' => Menu::get_spk_menus(),
         ];

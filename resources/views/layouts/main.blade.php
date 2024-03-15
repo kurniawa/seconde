@@ -124,7 +124,11 @@
                             </button>
                         </form>
                         @else
-                        {{-- <a href="{{ route($profile_menu['route']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200" role="menuitem" tabindex="-1">{{ $profile_menu['name'] }}</a> --}}
+                        @if (isset($profile_menu['params']))
+                        <a href="{{ route($profile_menu['route'], $profile_menu['params']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200" role="menuitem" tabindex="-1">{{ $profile_menu['name'] }}</a>
+                        @else
+                        <a href="{{ route($profile_menu['route']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200" role="menuitem" tabindex="-1">{{ $profile_menu['name'] }}</a>
+                        @endif
                       @endif
                       @endforeach
                       {{-- <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
@@ -190,6 +194,7 @@
               </div>
               <div class="mt-3 space-y-1 px-2">
                 @if (Auth::user())
+
                 <div>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf

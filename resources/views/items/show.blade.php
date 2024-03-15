@@ -65,14 +65,28 @@
             </div>
             @endif
         </div>
-        <h3 class="font-bold">Deskripsi:</h3>
-        <div class="border rounded p-2">
-            <p>{{ $item->deskripsi }}</p>
-            <div class="mt-2">
-                <p>{{ $item->keterangan }}</p>
+        @if ($item->deskripsi)
+        <div class="mt-2">
+            <h3 class="font-bold">Deskripsi:</h3>
+            <div class="border rounded p-2">
+                <p>{{ $item->deskripsi }}</p>
             </div>
         </div>
+        @else
+        <div class="mt-2"><h3 class="font-bold">Deskripsi: - tidak ada -</h3></div>
+        @endif
+        <div class="mt-2 text-slate-400">
+            @if ($item->keterangan)
+            <h3 class="font-bold">Keterangan lain:</h3>
+            <div class="border rounded p-2">
+                <p>{{ $item->keterangan }}</p>
+            </div>
+            @else
+            <h3 class="font-bold">Keterangan lain: - tidak ada -</h3>
+            @endif
+        </div>
         <div class="mt-2">
+            @if (count($peminat_items) !== 0)
             <h3 class="font-bold">Daftar Peminat:</h3>
             <div class="border rounded p-2">
                 <div class="grid grid-cols-2">
@@ -88,14 +102,19 @@
                     @endforeach
                 </div>
             </div>
+            @else
+            <h3 class="font-bold">Daftar Peminat: - belum ada -</h3>
+            @endif
         </div>
-        @if ($related_user !== null)
-        <div class="mt-8">
-            <label class="inline-flex items-center cursor-pointer">
-                <input type="checkbox" value="" class="sr-only peer">
-                <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-            </label>
+        @if ($item->sold)
+        <div class="mt-2 bg-yellow-100 p-2">
+            <h3 class="font-bold">Buyer / sold to:</h3>
+            <div class="border rounded p-2">
+                <p>{{ $item->buyer }}</p>
+            </div>
         </div>
+        @else
+        <h3 class="font-bold">Buyer / sold to: - belum ada -</h3>
         @endif
         <div class="mt-12">
             @if (Auth::user())

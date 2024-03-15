@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\ArtisanController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,4 +49,15 @@ Route::controller(ItemController::class)->group(function(){
     Route::post('/items/{item}/add_photo','add_photo')->name('items.add_photo');
     Route::post('/items/{item}/mau','mau')->name('items.mau');
     Route::post('/items/{item}/{peminat_item}/hapus_peminat','hapus_peminat')->name('items.hapus_peminat');
+});
+
+Route::controller(UserController::class)->group(function(){
+    Route::get('/users/{user}/list_of_items','list_of_items')->name('users.list_of_items')->middleware('auth');
+});
+
+Route::controller(ArtisanController::class)->group(function(){
+    Route::get('/artisans','index')->name('artisans.index')->middleware('auth');
+    Route::post('/artisans/migrate_fresh_seed','migrate_fresh_seed')->name('artisans.migrate_fresh_seed')->middleware('auth');
+    Route::post('/artisans/symbolic_link','symbolic_link')->name('artisans.symbolic_link')->middleware('auth');
+    Route::post('/artisans/optimize_clear','optimize_clear')->name('artisans.optimize_clear')->middleware('auth');
 });
