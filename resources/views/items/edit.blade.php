@@ -112,15 +112,17 @@
                                         <select id="peminat_item" name="peminat_item_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                             <option value="">-Pilih peminat-</option>
                                             <option value="">-</option>
-                                            @if ($item->sold)
                                             @foreach ($peminat_items as $peminat_item)
+                                            @if ($item->sold)
                                             @if ($peminat_item->user_id == $item->buyer_id)
                                             <option value="{{ $peminat_item->id }}" selected>{{ $peminat_item->nama }}</option>
                                             @else
                                             <option value="{{ $peminat_item->id }}">{{ $peminat_item->nama }}</option>
                                             @endif
-                                            @endforeach
+                                            @else
+                                            <option value="{{ $peminat_item->id }}">{{ $peminat_item->nama }}</option>
                                             @endif
+                                            @endforeach
                                         </select>
                                     </div>
                                     <div class="mt-2">Atau</div>

@@ -7,15 +7,15 @@
         <form action="{{ route('login') }}" method="POST" onsubmit="showLoadingSpinner()">
             @csrf
             <div class="">
-                <label for="username" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
+                <label for="username" class="block font-medium leading-6 text-gray-900">Username</label>
                 <div class="mt-2">
-                    <input type="text" name="username" id="username" autocomplete="given-name" class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    <input type="text" name="username" id="username" autocomplete="given-name" class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:leading-6">
                 </div>
             </div>
-            <div class="">
-                <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+            <div class="mt-2">
+                <label for="password" class="block font-medium leading-6 text-gray-900">Password</label>
                 <div class="mt-2">
-                    <input type="password" name="password" id="password" autocomplete="given-name" class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    <input type="password" name="password" id="password" autocomplete="given-name" class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:leading-6">
                 </div>
             </div>
             <div class="mt-3 flex justify-center">

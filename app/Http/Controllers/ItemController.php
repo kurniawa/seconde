@@ -132,7 +132,17 @@ class ItemController extends Controller
 
         $success_ = "";
 
-        $peminat_item_exist = PeminatItem::where('user_id', $user_id)->orWhere('nama', $nama)->first();
+        $peminat_item_exist = null;
+        if ($user_id !== null) {
+            $peminat_item_exist = PeminatItem::where('item_id', $item->id)->where('user_id', $user_id)->first();
+        } else {
+            $peminat_item_exist = PeminatItem::where('item_id', $item->id)->where('nama', $nama)->first();
+        }
+
+        // $peminat_item_exist = PeminatItem::where('item_id', $item->id)->where(function($query) use ($user_id,$nama){
+        //     $query->where('user_id', '<=', $user_id);
+        //     $query->orWhere('nama', '>=', $nama);
+        // })->first();
 
         if ($peminat_item_exist !== null) {
             $request->validate(['error' => 'required'],['error.required' => '-Nama peminat sudah terdaftar-']);
@@ -250,6 +260,7 @@ class ItemController extends Controller
         }
 
         $peminat_items = PeminatItem::where('item_id', $item->id)->get();
+        // dd($peminat_items);
 
         $data = [
             'menus' => Menu::get(),
