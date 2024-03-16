@@ -42,4 +42,12 @@ class ArtisanController extends Controller
         Artisan::call('optimize:clear');
         dd(Artisan::output());
     }
+
+    function vendor_publish_laravelPWA(Request $request) {
+        if (Auth::user()->role !== 'Developer') {
+            $request->validate(['error'=>'required'],['error.required'=>'clearance?']);
+        }
+        Artisan::call('vendor:publish --provider="LaravelPWA\Providers\LaravelPWAServiceProvider"');
+        dd(Artisan::output());
+    }
 }

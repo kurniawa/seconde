@@ -21,6 +21,10 @@
         <p>Migration lebih baik setelah storage:link, karena bisa jadi ada file di upload ke storage yang juga seharusnya muncul di public</p>
         <button class="bg-orange-400 text-white font-semibold rounded px-3 py-2">migrate:fresh --seed</button>
     </form>
+    <form action="{{ route('artisans.vendor_publish_laravelPWA') }}" method="post" class="mt-2">
+        @csrf
+        <button class="bg-emerald-400 text-white font-semibold rounded px-3 py-2">vendor:publish -> laravelPWA</button>
+    </form>
   </main>
 </div>
 @endsection
