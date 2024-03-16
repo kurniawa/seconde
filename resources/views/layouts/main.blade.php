@@ -18,7 +18,8 @@
             font-feature-settings:normal;
         }
     </style>
-    <title>seconde</title>
+    <title>Kitty Fish</title>
+    @laravelPWA
 </head>
 <body class="relative">
     <div id="menu-close-layer" class="absolute w-screen h-screen hidden z-30" onclick="hideMenuCloseLayer('profile-menu','menu-close-layer')"></div>
